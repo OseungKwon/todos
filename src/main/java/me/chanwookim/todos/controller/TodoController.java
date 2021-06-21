@@ -1,7 +1,6 @@
 package me.chanwookim.todos.controller;
 
 
-import com.sun.istack.Nullable;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.chanwookim.todos.domain.Todo;
@@ -18,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
@@ -112,9 +110,7 @@ public class TodoController {
             e.printStackTrace();
         }
 
-
-        todo.setImgUrl("http://localhost:8080/"+fileName);
-//        todo.update(new TodoPartial(todo.getName(),todo.isCompleted()));
+        todo.setImgUrl("http://localhost:8080/" + fileName);
         todo.setUpdated_at(LocalDateTime.now());
         todoRepository.save(todo);
 
