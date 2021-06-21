@@ -93,6 +93,33 @@ public class TodoController {
     }
 
 
+    @PostMapping("/{todoId}/image")
+    @ApiOperation(value = "Upload Image")
+    ResponseEntity<?> uploadTodoImage(@PathVariable("todoId") Long todoId, @RequestParam("file") MultipartFile file, HttpServletRequest request) {
+        Todo todo;
+        try {
+            todo = todoRepository.findById(todoId).get();
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String path = request.getServletContext().getRealPath("");
+        String filePath = path + "/" + fileName;
+        try {
+            file.transferTo(new File(filePath));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        todo.setImgUrl("http://localhost:8080/"+fileName);
+//        todo.update(new TodoPartial(todo.getName(),todo.isCompleted()));
+        todo.setUpdated_at(LocalDateTime.now());
+        todoRepository.save(todo);
+
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
 }
